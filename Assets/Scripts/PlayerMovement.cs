@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private Animator animator;
+    public Vector2 MoveInput => moveInput;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
