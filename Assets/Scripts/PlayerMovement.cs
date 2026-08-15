@@ -8,14 +8,16 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 moveInput;
     private Animator animator;
     public Vector2 MoveInput => moveInput;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    private float facingX = 1f;
+    public float FacingX => facingX;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         rb.linearVelocity = moveInput * moveSpeed;
@@ -28,6 +30,9 @@ public class PlayerMovement : MonoBehaviour
         {
             animator.SetFloat("LastInputX", moveInput.x);
             animator.SetFloat("LastInputY", moveInput.y);
+
+            if (moveInput.x != 0f)
+                facingX = Mathf.Sign(moveInput.x);
         }
     }
 
