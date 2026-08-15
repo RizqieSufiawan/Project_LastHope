@@ -5,8 +5,12 @@ public class Health : MonoBehaviour, IDamageable
 {
     public int maxHealth = 50;
     public int CurrentHealth { get; private set; }
+    public bool destroyOnDeath = true;
 
     public event Action OnDamaged;
+    public event Action OnDeath;
+
+    private bool isDead;
 
     private void Awake()
     {
@@ -15,6 +19,8 @@ public class Health : MonoBehaviour, IDamageable
 
     public void Damage(int amount)
     {
+        if (isDead) return;
+
         CurrentHealth -= amount;
         OnDamaged?.Invoke();
 
@@ -23,9 +29,23 @@ public class Health : MonoBehaviour, IDamageable
             Die();
         }
     }
+    public void SetMaxHealth(int newMax, bool healToFull = true)
+    {
+        maxHealth = newMax;
+        if (healToFull)
+        {
+            CurrentHealth = maxHealth;
+        }
+    }
 
     private void Die()
     {
-        Destroy(gameObject);
+        isDead = true;
+        OnDeath?.Invoke();
+
+        if (destroyOnDeath)
+        {
+            Destroy(gameObject);
+        }
     }
 }

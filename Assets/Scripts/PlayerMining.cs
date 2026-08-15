@@ -27,6 +27,7 @@ public class PlayerMining : MonoBehaviour
     public Sprite ironSprite;
     public Sprite goldSprite;
     public Sprite diamondSprite;
+    public Transform pickaxePivot;
     public Vector3 pickaxeBaseLocalPosition;
 
     public List<PickaxeLootTable> lootTables = new List<PickaxeLootTable>
@@ -195,17 +196,15 @@ public class PlayerMining : MonoBehaviour
 
     private void UpdatePickaxeFacing()
     {
-        bool facingLeft = playerMovement.FacingX < 0f;
+        bool facingLeft = playerMovement.FacingX >= 0f;
 
-        Transform pickaxeTransform = pickaxeAnimator.transform;
-
-        Vector3 scale = pickaxeTransform.localScale;
+        Vector3 scale = pickaxePivot.localScale;
         scale.x = facingLeft ? -Mathf.Abs(scale.x) : Mathf.Abs(scale.x);
-        pickaxeTransform.localScale = scale;
+        pickaxePivot.localScale = scale;
 
         Vector3 pos = pickaxeBaseLocalPosition;
         pos.x = facingLeft ? -Mathf.Abs(pickaxeBaseLocalPosition.x) : Mathf.Abs(pickaxeBaseLocalPosition.x);
-        pickaxeTransform.localPosition = pos;
+        pickaxePivot.localPosition = pos;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
