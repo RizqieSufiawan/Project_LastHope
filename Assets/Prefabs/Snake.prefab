@@ -196,8 +196,10 @@ MonoBehaviour:
   moveSpeed: 2
   attackDamage: 5
   attackRange: 0.05
-  attackInterval: 1.5
+  attackInterval: 2.5
+  engageBuffer: 0.2
   priorityTags:
   - Defense
   - Cart
   playerAggroRange: 3
+  retargetInterval: 1

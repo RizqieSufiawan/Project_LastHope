@@ -21,6 +21,13 @@ public class CraftingStation : MonoBehaviour, IInteractable
     new CraftCost { type = ResourceType.Diamond, amount = 1 },
 };
 
+    [Header("Grenade")]
+    public List<CraftCost> grenadeCosts = new List<CraftCost>
+{
+    new CraftCost { type = ResourceType.Copper, amount = 5 },
+    new CraftCost { type = ResourceType.Iron, amount = 2 },
+};
+
     [Header("Pickaxe Upgrade")]
     public List<CraftCost> upgradeToIronCosts = new List<CraftCost> { new CraftCost { type = ResourceType.Iron, amount = 3 } };
     public List<CraftCost> upgradeToGoldCosts = new List<CraftCost> { new CraftCost { type = ResourceType.Gold, amount = 3 } };
@@ -52,6 +59,8 @@ public class CraftingStation : MonoBehaviour, IInteractable
     }
 
     public List<CraftCost> GetC4Costs() => c4Costs;
+
+    public List<CraftCost> GetGrenadeCosts() => grenadeCosts;
 
     public List<CraftCost> GetPickaxeUpgradeCosts(PickaxeLevel currentLevel)
     {

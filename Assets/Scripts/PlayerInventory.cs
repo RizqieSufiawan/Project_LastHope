@@ -9,6 +9,8 @@ public class PlayerInventory : MonoBehaviour
 
     public int turretCount = 0;
 
+    public int grenadeCount = 0; // no cap — same pattern as Turret
+
     public List<string> acquisitionOrder = new List<string>();
 
     public event Action OnInventoryChanged;
@@ -67,12 +69,39 @@ public class PlayerInventory : MonoBehaviour
         return true;
     }
 
+    public bool CanCraftGrenade()
+    {
+        return true; // resource cost is the only real limiter, same as Turret
+    }
+
+    public bool AddGrenade(int amount)
+    {
+        if (!acquisitionOrder.Contains("Grenade"))
+        {
+            acquisitionOrder.Add("Grenade");
+            Debug.Log("Grenade added to acquisitionOrder. Current list: " + string.Join(", ", acquisitionOrder));
+        }
+
+        grenadeCount += amount;
+        OnInventoryChanged?.Invoke();
+        return true;
+    }
+
+    public bool SpendGrenade(int amount)
+    {
+        if (grenadeCount < amount) return false;
+        grenadeCount -= amount;
+        OnInventoryChanged?.Invoke();
+        return true;
+    }
+
     public int GetItemCount(string itemId)
     {
         switch (itemId)
         {
             case "C4": return c4Count;
             case "Turret": return turretCount;
+            case "Grenade": return grenadeCount;
             default: return 0;
         }
     }

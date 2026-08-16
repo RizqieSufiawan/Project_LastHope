@@ -47,9 +47,9 @@ public class PlayerMining : MonoBehaviour
             level = PickaxeLevel.Base,
             drops = new List<ResourceDrop>
             {
-                new ResourceDrop { type = ResourceType.Copper,  amount = 1, chancePercent = 100f },
-                new ResourceDrop { type = ResourceType.Iron,    amount = 1, chancePercent = 50f  },
-                new ResourceDrop { type = ResourceType.Gold,    amount = 1, chancePercent = 10f  },
+                new ResourceDrop { type = ResourceType.Copper,  amount = 2, chancePercent = 100f },
+                new ResourceDrop { type = ResourceType.Iron,    amount = 1, chancePercent = 75f  },
+                new ResourceDrop { type = ResourceType.Gold,    amount = 1, chancePercent = 15f  },
                 new ResourceDrop { type = ResourceType.Diamond, amount = 1, chancePercent = 2f   },
             }
         },
@@ -58,10 +58,10 @@ public class PlayerMining : MonoBehaviour
             level = PickaxeLevel.Iron,
             drops = new List<ResourceDrop>
             {
-                new ResourceDrop { type = ResourceType.Copper,  amount = 2, chancePercent = 100f },
-                new ResourceDrop { type = ResourceType.Iron,    amount = 1, chancePercent = 100f },
-                new ResourceDrop { type = ResourceType.Gold,    amount = 1, chancePercent = 30f  },
-                new ResourceDrop { type = ResourceType.Diamond, amount = 1, chancePercent = 10f  },
+                new ResourceDrop { type = ResourceType.Copper,  amount = 3, chancePercent = 100f },
+                new ResourceDrop { type = ResourceType.Iron,    amount = 2, chancePercent = 100f },
+                new ResourceDrop { type = ResourceType.Gold,    amount = 1, chancePercent = 45f  },
+                new ResourceDrop { type = ResourceType.Diamond, amount = 1, chancePercent = 12f  },
             }
         },
         new PickaxeLootTable
@@ -69,10 +69,10 @@ public class PlayerMining : MonoBehaviour
             level = PickaxeLevel.Gold,
             drops = new List<ResourceDrop>
             {
-                new ResourceDrop { type = ResourceType.Copper,  amount = 3, chancePercent = 100f },
-                new ResourceDrop { type = ResourceType.Iron,    amount = 2, chancePercent = 100f },
-                new ResourceDrop { type = ResourceType.Gold,    amount = 1, chancePercent = 100f },
-                new ResourceDrop { type = ResourceType.Diamond, amount = 1, chancePercent = 20f  },
+                new ResourceDrop { type = ResourceType.Copper,  amount = 4, chancePercent = 100f },
+                new ResourceDrop { type = ResourceType.Iron,    amount = 3, chancePercent = 100f },
+                new ResourceDrop { type = ResourceType.Gold,    amount = 2, chancePercent = 100f },
+                new ResourceDrop { type = ResourceType.Diamond, amount = 1, chancePercent = 25f  },
             }
         },
         new PickaxeLootTable
@@ -80,9 +80,9 @@ public class PlayerMining : MonoBehaviour
             level = PickaxeLevel.Diamond,
             drops = new List<ResourceDrop>
             {
-                new ResourceDrop { type = ResourceType.Copper,  amount = 4, chancePercent = 100f },
-                new ResourceDrop { type = ResourceType.Iron,    amount = 3, chancePercent = 100f },
-                new ResourceDrop { type = ResourceType.Gold,    amount = 2, chancePercent = 100f },
+                new ResourceDrop { type = ResourceType.Copper,  amount = 5, chancePercent = 100f },
+                new ResourceDrop { type = ResourceType.Iron,    amount = 4, chancePercent = 100f },
+                new ResourceDrop { type = ResourceType.Gold,    amount = 3, chancePercent = 100f },
                 new ResourceDrop { type = ResourceType.Diamond, amount = 1, chancePercent = 100f },
             }
         },

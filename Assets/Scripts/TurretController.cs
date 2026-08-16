@@ -12,12 +12,40 @@ public class TurretController : MonoBehaviour
     public float laserDuration = 0.1f;
     public float laserWidth = 0.1f;
 
+    [Tooltip("If true, auto-generates a plain solid-color rectangle sprite at runtime, ignoring whatever sprite was assigned in the Inspector. Turn off if you want to use your own custom laser sprite instead.")]
+    public bool generateSolidSprite = true;
+    public Color laserColor = new Color(1f, 0.2f, 0.2f, 1f);
+
     private float fireTimer;
     private float laserTimer;
 
     private void Awake()
     {
-        if (laserSprite != null) laserSprite.enabled = false;
+        if (laserSprite != null)
+        {
+            laserSprite.enabled = false;
+
+            if (generateSolidSprite)
+            {
+                EnsureSolidLaserSprite();
+            }
+
+            laserSprite.color = laserColor;
+        }
+    }
+
+    private void EnsureSolidLaserSprite()
+    {
+        // Generates a plain 1x1 white pixel sprite at runtime so the laser
+        // always renders as a clean rectangle regardless of what sprite
+        // was previously assigned in the Inspector (e.g. a cloud/burst sprite).
+        Texture2D tex = new Texture2D(1, 1);
+        tex.SetPixel(0, 0, Color.white);
+        tex.Apply();
+        tex.filterMode = FilterMode.Point;
+
+        Sprite solidSprite = Sprite.Create(tex, new Rect(0, 0, 1, 1), new Vector2(0.5f, 0.5f), 1f);
+        laserSprite.sprite = solidSprite;
     }
 
     private void Update()

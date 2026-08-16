@@ -82,6 +82,12 @@ public class HotbarUI : MonoBehaviour
         }
         else
         {
+            if (selectedIndex == index)
+            {
+                selectedIndex = -1;
+                return;
+            }
+
             if (mining != null && mining.isEquipped)
             {
                 mining.ToggleEquip();
@@ -99,9 +105,9 @@ public class HotbarUI : MonoBehaviour
 
     private string GetSelectedItemIdInternal(int index)
     {
-        if (index == 0) return null;
+        if (index <= 0) return null;
         int orderIndex = index - 1;
-        if (orderIndex < inventory.acquisitionOrder.Count)
+        if (orderIndex >= 0 && orderIndex < inventory.acquisitionOrder.Count)
         {
             return inventory.acquisitionOrder[orderIndex];
         }

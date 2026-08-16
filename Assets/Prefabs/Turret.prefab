@@ -168,10 +168,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TurretController
   range: 4
   fireInterval: 2
-  damage: 8
+  damage: 10
   laserSprite: {fileID: 88162038766851083}
   laserDuration: 0.2
-  laserWidth: 0.5
+  laserWidth: 0.25
+  generateSolidSprite: 1
+  laserColor: {r: 1, g: 0.2, b: 0.2, a: 1}
 --- !u!1 &8102352742344535535
 GameObject:
   m_ObjectHideFlags: 0

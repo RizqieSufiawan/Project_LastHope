@@ -145,8 +145,10 @@ public class CraftingMenuUI : MonoBehaviour
             if (upgradeLabel != null) upgradeLabel.text = $"Upgrade to {nextLevel}";
         }
 
-        PopulateCostSlots(grenadeSlots, null);
-        grenadeButton.interactable = false;
+        var grenadeCosts = currentStation.GetGrenadeCosts();
+        PopulateCostSlots(grenadeSlots, grenadeCosts);
+        var invForGrenade = currentPlayer.GetComponent<PlayerInventory>();
+        grenadeButton.interactable = CraftCostUtility.CanAfford(grenadeCosts) && invForGrenade.CanCraftGrenade();
 
         var placer = currentPlayer.GetComponent<BuildingPlacer>();
         var turretCosts = placer != null ? placer.GetTurretCosts() : null;
@@ -168,6 +170,22 @@ public class CraftingMenuUI : MonoBehaviour
         CraftCostUtility.Spend(costs);
         inventory.AddTurret(1);
         Debug.Log("Crafted 1 Turret! Select it in the Hotbar to place it.");
+
+        RefreshButtons();
+    }
+
+    public void OnClickCraftGrenade()
+    {
+        var costs = currentStation.GetGrenadeCosts();
+        var inventory = currentPlayer.GetComponent<PlayerInventory>();
+        if (inventory == null) return;
+
+        if (!CraftCostUtility.CanAfford(costs)) return;
+        if (!inventory.CanCraftGrenade()) return;
+
+        CraftCostUtility.Spend(costs);
+        inventory.AddGrenade(1);
+        Debug.Log("Crafted 1 Grenade! Select it in the Hotbar to throw it.");
 
         RefreshButtons();
     }
