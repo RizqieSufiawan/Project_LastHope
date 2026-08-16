@@ -901,8 +901,8 @@ MonoBehaviour:
   pickaxePivot: {fileID: 485152376}
   pickaxeBaseLocalPosition: {x: -0.2, y: -0.272, z: 0}
   swingDamage: 10
-  attackRadius: 0.7
-  attackInterval: 1
+  attackRange: 1
+  attackAngle: 60
   lootTables:
   - level: 0
     drops:
