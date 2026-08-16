@@ -17,6 +17,7 @@ public class PickaxeLootTable
     public List<ResourceDrop> drops = new List<ResourceDrop>();
 }
 
+
 [RequireComponent(typeof(PlayerMovement))]
 public class PlayerMining : MonoBehaviour
 {
@@ -29,7 +30,12 @@ public class PlayerMining : MonoBehaviour
     public Sprite diamondSprite;
     public Transform pickaxePivot;
     public Vector3 pickaxeBaseLocalPosition;
+    [Header("Combat")]
+    public int swingDamage = 10;
+    public float attackRange = 1.2f;
+    [Range(0f, 180f)] public float attackAngle = 60f;
 
+    private float attackTimer;
     public List<PickaxeLootTable> lootTables = new List<PickaxeLootTable>
     {
         new PickaxeLootTable
@@ -206,7 +212,30 @@ public class PlayerMining : MonoBehaviour
         pos.x = facingLeft ? -Mathf.Abs(pickaxeBaseLocalPosition.x) : Mathf.Abs(pickaxeBaseLocalPosition.x);
         pickaxePivot.localPosition = pos;
     }
+    public void PerformSwingHit()
+    {
+        Vector2 mouseWorldPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        Vector2 aimDirection = (mouseWorldPos - (Vector2)transform.position).normalized;
 
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, attackRange);
+
+        foreach (var hit in hits)
+        {
+            if (hit.CompareTag("Cart")) continue;
+            if (!hit.CompareTag("Enemy")) continue;
+
+            Vector2 toTarget = ((Vector2)hit.transform.position - (Vector2)transform.position).normalized;
+            float angle = Vector2.Angle(aimDirection, toTarget);
+
+            if (angle > attackAngle) continue; // di luar cone, skip
+
+            var damageable = hit.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                damageable.Damage(swingDamage);
+            }
+        }
+    }
     private void OnTriggerEnter2D(Collider2D other)
     {
         var node = other.GetComponent<ResourceNode>();
@@ -222,4 +251,23 @@ public class PlayerMining : MonoBehaviour
             CancelMining();
         }
     }
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+
+        if (Application.isPlaying && Camera.main != null)
+        {
+            Vector2 mouseWorldPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            Vector2 aimDirection = (mouseWorldPos - (Vector2)transform.position).normalized;
+
+            Vector2 leftBoundary = Quaternion.Euler(0, 0, attackAngle) * aimDirection;
+            Vector2 rightBoundary = Quaternion.Euler(0, 0, -attackAngle) * aimDirection;
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(transform.position, (Vector2)transform.position + leftBoundary * attackRange);
+            Gizmos.DrawLine(transform.position, (Vector2)transform.position + rightBoundary * attackRange);
+        }
+    }
 }
+
