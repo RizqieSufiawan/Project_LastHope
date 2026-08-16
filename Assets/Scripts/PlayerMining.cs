@@ -297,6 +297,13 @@ public class PlayerMining : MonoBehaviour
             CancelMining();
         }
     }
+
+    public void UpgradePickaxe(PickaxeLevel newLevel)
+    {
+        currentPickaxeLevel = newLevel;
+        UpdatePickaxeVisual();
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
