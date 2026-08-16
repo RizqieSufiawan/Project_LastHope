@@ -30,10 +30,14 @@ public class PlayerMining : MonoBehaviour
     public Sprite diamondSprite;
     public Transform pickaxePivot;
     public Vector3 pickaxeBaseLocalPosition;
+
     [Header("Combat")]
     public int swingDamage = 10;
     public float attackRange = 1.2f;
     [Range(0f, 180f)] public float attackAngle = 60f;
+
+    [Header("Equip")]
+    public bool isEquipped = false;
 
     private float attackTimer;
     public List<PickaxeLootTable> lootTables = new List<PickaxeLootTable>
@@ -96,7 +100,13 @@ public class PlayerMining : MonoBehaviour
     {
         playerMovement = GetComponent<PlayerMovement>();
         health = GetComponent<Health>();
-         UpdatePickaxeVisual();
+        UpdatePickaxeVisual();
+
+        var spriteRenderer = pickaxeAnimator.GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.enabled = isEquipped;
+        }
     }
 
     private void OnEnable()
@@ -111,6 +121,8 @@ public class PlayerMining : MonoBehaviour
 
     public void OnMineInput(InputAction.CallbackContext context)
     {
+        if (!isEquipped) return;
+
         if (context.started)
         {
             isSwinging = true;
@@ -138,8 +150,21 @@ public class PlayerMining : MonoBehaviour
 
     private void Update()
     {
-        pickaxeAnimator.SetBool("IsMining", isSwinging);
+        if (Keyboard.current != null && Keyboard.current.digit1Key.wasPressedThisFrame)
+        {
+            ToggleEquip();
+        }
+
         UpdatePickaxeFacing();
+
+        if (!isEquipped)
+        {
+            pickaxeAnimator.SetBool("IsMining", false);
+            return;
+        }
+
+        pickaxeAnimator.SetBool("IsMining", isSwinging);
+
         if (!isMining) return;
 
         if (playerMovement.MoveInput.sqrMagnitude > 0.01f)
@@ -212,8 +237,29 @@ public class PlayerMining : MonoBehaviour
         pos.x = facingLeft ? -Mathf.Abs(pickaxeBaseLocalPosition.x) : Mathf.Abs(pickaxeBaseLocalPosition.x);
         pickaxePivot.localPosition = pos;
     }
+    private void ToggleEquip()
+    {
+        isEquipped = !isEquipped;
+
+        var spriteRenderer = pickaxeAnimator.GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.enabled = isEquipped;
+        }
+
+        if (!isEquipped)
+        {
+            isSwinging = false;
+            CancelMining();
+        }
+
+        Debug.Log(isEquipped ? "Pickaxe equipped" : "Pickaxe unequipped");
+    }
+
     public void PerformSwingHit()
     {
+        if (!isEquipped) return;
+
         Vector2 mouseWorldPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         Vector2 aimDirection = (mouseWorldPos - (Vector2)transform.position).normalized;
 

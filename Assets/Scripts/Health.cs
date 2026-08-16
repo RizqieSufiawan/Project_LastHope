@@ -48,4 +48,9 @@ public class Health : MonoBehaviour, IDamageable
             Destroy(gameObject);
         }
     }
+    public void Heal(int amount)
+    {
+        if (isDead) return;
+        CurrentHealth = Mathf.Min(CurrentHealth + amount, maxHealth);
+    }
 }
