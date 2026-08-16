@@ -127,6 +127,8 @@ public class EnemyAI : MonoBehaviour
 
         if (currentTargetDamageable != null)
         {
+            float dist = GetDistanceToTarget();
+            Debug.Log($"{gameObject.name} attacking {currentTarget.name} at distance {dist:F2}");
             currentTargetDamageable.Damage(attackDamage);
         }
     }

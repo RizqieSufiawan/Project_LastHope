@@ -118,7 +118,8 @@ public class CraftingMenuUI : MonoBehaviour
 
         var c4Costs = currentStation.GetC4Costs();
         PopulateCostSlots(c4Slots, c4Costs);
-        c4Button.interactable = CraftCostUtility.CanAfford(c4Costs);
+        var inv = currentPlayer.GetComponent<PlayerInventory>();
+        c4Button.interactable = CraftCostUtility.CanAfford(c4Costs) && inv.CanCraftC4();
 
         var upgradeCosts = currentStation.GetPickaxeUpgradeCosts(mining.currentPickaxeLevel);
         if (upgradeCosts == null)
@@ -147,8 +148,28 @@ public class CraftingMenuUI : MonoBehaviour
         PopulateCostSlots(grenadeSlots, null);
         grenadeButton.interactable = false;
 
-        PopulateCostSlots(turretSlots, null);
-        turretButton.interactable = false;
+        var placer = currentPlayer.GetComponent<BuildingPlacer>();
+        var turretCosts = placer != null ? placer.GetTurretCosts() : null;
+        PopulateCostSlots(turretSlots, turretCosts);
+        var invForTurret = currentPlayer.GetComponent<PlayerInventory>();
+        turretButton.interactable = turretCosts != null && CraftCostUtility.CanAfford(turretCosts) && invForTurret.CanCraftTurret();
+    }
+
+    public void OnClickCraftTurret()
+    {
+        var placer = currentPlayer.GetComponent<BuildingPlacer>();
+        var inventory = currentPlayer.GetComponent<PlayerInventory>();
+        if (placer == null || inventory == null) return;
+
+        var costs = placer.GetTurretCosts();
+        if (!CraftCostUtility.CanAfford(costs)) return;
+        if (!inventory.CanCraftTurret()) return;
+
+        CraftCostUtility.Spend(costs);
+        inventory.AddTurret(1);
+        Debug.Log("Crafted 1 Turret! Select it in the Hotbar to place it.");
+
+        RefreshButtons();
     }
 
     private Sprite GetPickaxeTierIcon(PickaxeLevel level)
@@ -202,10 +223,12 @@ public class CraftingMenuUI : MonoBehaviour
     public void OnClickCraftC4()
     {
         var costs = currentStation.GetC4Costs();
+        var inventory = currentPlayer.GetComponent<PlayerInventory>();
+
         if (!CraftCostUtility.CanAfford(costs)) return;
+        if (!inventory.CanCraftC4()) return;
 
         CraftCostUtility.Spend(costs);
-        var inventory = currentPlayer.GetComponent<PlayerInventory>();
         inventory.AddC4(1);
         Debug.Log("Crafted 1 C4!");
 

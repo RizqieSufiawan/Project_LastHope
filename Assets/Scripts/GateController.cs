@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GateController : MonoBehaviour, IInteractable
 {
-    public float detonationDelay = 90f; // 1 menit 30 detik
+    public float detonationDelay = 90f;
 
     public bool IsDestroyed { get; private set; }
     public bool IsC4Placed { get; private set; }
@@ -14,8 +14,13 @@ public class GateController : MonoBehaviour, IInteractable
     public bool CanInteract(GameObject player)
     {
         if (IsDestroyed || IsC4Placed) return false;
+
         var inventory = player.GetComponent<PlayerInventory>();
-        return inventory != null && inventory.c4Count > 0;
+        if (inventory == null || inventory.c4Count <= 0) return false;
+
+        if (HotbarUI.Instance == null || HotbarUI.Instance.GetSelectedItemId() != "C4") return false;
+
+        return true;
     }
 
     public void Interact(GameObject player)
@@ -51,6 +56,7 @@ public class GateController : MonoBehaviour, IInteractable
     {
         if (IsDestroyed) return "";
         if (IsC4Placed) return "C4 armed — waiting to detonate";
+        if (HotbarUI.Instance != null && HotbarUI.Instance.GetSelectedItemId() != "C4") return "Select C4 in hotbar first";
         return "Press E to place C4";
     }
 }

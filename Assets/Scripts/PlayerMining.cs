@@ -150,11 +150,6 @@ public class PlayerMining : MonoBehaviour
 
     private void Update()
     {
-        if (Keyboard.current != null && Keyboard.current.digit1Key.wasPressedThisFrame)
-        {
-            ToggleEquip();
-        }
-
         UpdatePickaxeFacing();
 
         if (!isEquipped)
@@ -237,7 +232,7 @@ public class PlayerMining : MonoBehaviour
         pos.x = facingLeft ? -Mathf.Abs(pickaxeBaseLocalPosition.x) : Mathf.Abs(pickaxeBaseLocalPosition.x);
         pickaxePivot.localPosition = pos;
     }
-    private void ToggleEquip()
+    public void ToggleEquip()
     {
         isEquipped = !isEquipped;
 
