@@ -38,6 +38,10 @@ public class PlayerController : MonoBehaviour
         if (rb != null) rb.linearVelocity = Vector2.zero;
         if (playerMovement != null) playerMovement.enabled = false;
         if (playerMining != null) playerMining.enabled = false;
+        if (FailMenuUI.Instance != null)
+        {
+            FailMenuUI.Instance.Show("You Died!");
+        }
 
     }
 }

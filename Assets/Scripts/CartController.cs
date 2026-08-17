@@ -23,6 +23,10 @@ public class CartController : MonoBehaviour
     private void HandleCartDestroyed()
     {
         Debug.Log("Cart destroyed — level failed!");
-        // TODO: nanti dihubungkan ke sistem game-over/UI pas sistem itu udah dibangun
+
+        if (FailMenuUI.Instance != null)
+        {
+            FailMenuUI.Instance.Show("Cart Destroyed!");
+        }
     }
 }
