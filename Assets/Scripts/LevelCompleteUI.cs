@@ -23,7 +23,7 @@ public class LevelCompleteUI : MonoBehaviour
 
     [Header("Timing")]
     public float fadeDuration = 1.5f;
-    public float contentFadeDuration = 0.5f;
+    public float contentFadeDuration = 1.5f;
 
     [Header("Scenes")]
     [Tooltip("Exact scene name (as in Build Settings) to load for Main Menu.")]
