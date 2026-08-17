@@ -164,6 +164,9 @@ public class BuildingPlacer : MonoBehaviour
         if (ghostInstance != null) Destroy(ghostInstance);
         isPlacing = false;
         currentType = PlaceableType.None;
+    }
+    public void CancelPlacementPublic()
+    {
         CancelPlacement();
     }
 

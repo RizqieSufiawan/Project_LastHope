@@ -67,6 +67,12 @@ public class HotbarUI : MonoBehaviour
     {
         if (index < 0 || index >= slots.Length) return;
 
+        string previousItemId = GetSelectedItemIdInternal(selectedIndex);
+        if (previousItemId == "Turret" && selectedIndex != index && placer != null)
+        {
+            placer.CancelPlacementPublic();
+        }
+
         if (index == 0)
         {
             if (selectedIndex == 0 && mining != null)
@@ -84,7 +90,13 @@ public class HotbarUI : MonoBehaviour
         {
             if (selectedIndex == index)
             {
+                string itemIdBeforeDeselect = GetSelectedItemIdInternal(index);
                 selectedIndex = -1;
+
+                if (itemIdBeforeDeselect == "Turret" && placer != null)
+                {
+                    placer.CancelPlacementPublic();
+                }
                 return;
             }
 
