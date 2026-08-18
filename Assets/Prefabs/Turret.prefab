@@ -192,6 +192,7 @@ GameObject:
   - component: {fileID: 3655827179839884483}
   - component: {fileID: 146967369558415696}
   - component: {fileID: 4383922004389140429}
+  - component: {fileID: 8064475496497404017}
   m_Layer: 8
   m_Name: Turret
   m_TagString: Defense
@@ -354,6 +355,7 @@ MonoBehaviour:
   laserWidth: 0.25
   generateSolidSprite: 1
   laserColor: {r: 1, g: 0.2, b: 0.2, a: 1}
+  fireClip: {fileID: 8300000, guid: 052915cff6742c748b58aa2fec4e3b93, type: 3}
 --- !u!114 &4383922004389140429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -369,6 +371,21 @@ MonoBehaviour:
   barRoot: {fileID: 1509834895917323397}
   fillImage: {fileID: 2188389651775800223}
   lingerDuration: 10
+--- !u!114 &8064475496497404017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4830268105742242161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b736da818130a448eb0f1f95d05b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealthAudio
+  damagedClip: {fileID: 0}
+  deathClip: {fileID: 8300000, guid: 9d7ae961e97fd94418c75177c3df0cc4, type: 3}
+  volume: 1
 --- !u!1 &6617445437990465846
 GameObject:
   m_ObjectHideFlags: 0

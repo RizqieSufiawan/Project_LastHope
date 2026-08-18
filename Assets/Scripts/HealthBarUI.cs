@@ -26,11 +26,13 @@ public class HealthBarUI : MonoBehaviour
     private void OnEnable()
     {
         if (health != null) health.OnDamaged += HandleDamaged;
+        health.OnHealed += HandleDamaged;
     }
 
     private void OnDisable()
     {
         if (health != null) health.OnDamaged -= HandleDamaged;
+        health.OnHealed -= HandleDamaged;
     }
 
     private void HandleDamaged()

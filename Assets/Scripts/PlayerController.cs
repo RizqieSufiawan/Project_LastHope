@@ -33,7 +33,6 @@ public class PlayerController : MonoBehaviour
         if (IsDead) return;
         IsDead = true;
 
-        Debug.Log("Player died — game over!");
 
         if (rb != null) rb.linearVelocity = Vector2.zero;
         if (playerMovement != null) playerMovement.enabled = false;

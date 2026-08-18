@@ -2,8 +2,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Singleton. Attach to a full-screen UI Image (white, alpha 0 by default,
-// Raycast Target OFF) sitting on its own top-most Canvas so it overlays everything.
 public class ScreenFlash : MonoBehaviour
 {
     public static ScreenFlash Instance { get; private set; }
@@ -19,6 +17,7 @@ public class ScreenFlash : MonoBehaviour
 
         if (flashImage != null)
         {
+            flashImage.raycastTarget = false;
             SetAlpha(0f);
         }
     }
@@ -32,7 +31,6 @@ public class ScreenFlash : MonoBehaviour
     {
         if (flashImage == null)
         {
-            Debug.LogWarning("ScreenFlash: flashImage not assigned in Inspector");
             return;
         }
 

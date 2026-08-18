@@ -16,6 +16,9 @@ public class TurretController : MonoBehaviour
     public bool generateSolidSprite = true;
     public Color laserColor = new Color(1f, 0.2f, 0.2f, 1f);
 
+    [Header("Audio")]
+    public AudioClip fireClip;
+
     private float fireTimer;
     private float laserTimer;
 
@@ -36,9 +39,6 @@ public class TurretController : MonoBehaviour
 
     private void EnsureSolidLaserSprite()
     {
-        // Generates a plain 1x1 white pixel sprite at runtime so the laser
-        // always renders as a clean rectangle regardless of what sprite
-        // was previously assigned in the Inspector (e.g. a cloud/burst sprite).
         Texture2D tex = new Texture2D(1, 1);
         tex.SetPixel(0, 0, Color.white);
         tex.Apply();
@@ -90,6 +90,7 @@ public class TurretController : MonoBehaviour
             damageable.Damage(damage);
         }
 
+        AudioManager.Instance?.PlaySFX(fireClip);
         ShowLaser(closest.position);
     }
 

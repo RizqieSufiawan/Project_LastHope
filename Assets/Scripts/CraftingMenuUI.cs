@@ -105,16 +105,11 @@ public class CraftingMenuUI : MonoBehaviour
 
     private void RefreshButtons()
     {
-        if (currentStation == null) { Debug.LogError("currentStation is NULL"); return; }
-        if (currentPlayer == null) { Debug.LogError("currentPlayer is NULL"); return; }
-        if (ResourceManager.Instance == null) { Debug.LogError("ResourceManager.Instance is NULL"); return; }
-        if (c4Button == null) { Debug.LogError("c4Button is NULL"); return; }
-        if (upgradeButton == null) { Debug.LogError("upgradeButton is NULL"); return; }
-        if (grenadeButton == null) { Debug.LogError("grenadeButton is NULL"); return; }
-        if (turretButton == null) { Debug.LogError("turretButton is NULL"); return; }
+        if (currentStation == null || currentPlayer == null || ResourceManager.Instance == null) return;
+        if (c4Button == null || upgradeButton == null || grenadeButton == null || turretButton == null) return;
 
         var mining = currentPlayer.GetComponent<PlayerMining>();
-        if (mining == null) { Debug.LogError("PlayerMining component is NULL on currentPlayer"); return; }
+        if (mining == null) return;
 
         var c4Costs = currentStation.GetC4Costs();
         PopulateCostSlots(c4Slots, c4Costs);
@@ -169,7 +164,6 @@ public class CraftingMenuUI : MonoBehaviour
 
         CraftCostUtility.Spend(costs);
         inventory.AddTurret(1);
-        Debug.Log("Crafted 1 Turret! Select it in the Hotbar to place it.");
 
         RefreshButtons();
     }
@@ -185,7 +179,6 @@ public class CraftingMenuUI : MonoBehaviour
 
         CraftCostUtility.Spend(costs);
         inventory.AddGrenade(1);
-        Debug.Log("Crafted 1 Grenade! Select it in the Hotbar to throw it.");
 
         RefreshButtons();
     }
@@ -224,7 +217,7 @@ public class CraftingMenuUI : MonoBehaviour
             else
             {
                 Sprite icon = GetResourceIcon(columnType);
-                slots[i].SetCost(icon, 0); // correct icon for that column, just 0 needed
+                slots[i].SetCost(icon, 0);
             }
         }
     }
@@ -248,7 +241,6 @@ public class CraftingMenuUI : MonoBehaviour
 
         CraftCostUtility.Spend(costs);
         inventory.AddC4(1);
-        Debug.Log("Crafted 1 C4!");
 
         RefreshButtons();
     }
@@ -270,7 +262,6 @@ public class CraftingMenuUI : MonoBehaviour
         };
 
         mining.UpgradePickaxe(nextLevel);
-        Debug.Log($"Pickaxe upgraded to {nextLevel}!");
 
         RefreshButtons();
     }

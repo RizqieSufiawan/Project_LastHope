@@ -18,6 +18,10 @@ public class GateController : MonoBehaviour, IInteractable
     public Color flashColor = Color.white;
     public float flashFadeDuration = 0.5f;
 
+    [Header("Audio")]
+    public AudioClip c4PlaceClip;
+    public AudioClip explosionClip;
+
     public bool IsDestroyed { get; private set; }
     public bool IsC4Placed { get; private set; }
     public event Action OnGateDestroyed;
@@ -46,10 +50,12 @@ public class GateController : MonoBehaviour, IInteractable
 
         IsC4Placed = true;
         SpawnC4Visual();
+        AudioManager.Instance?.PlaySFX(c4PlaceClip);
         OnC4Placed?.Invoke();
         Debug.Log($"C4 placed! Detonating in {detonationDelay} seconds...");
 
         StartCoroutine(DetonateAfterDelay());
+        BombTimerUI.Instance?.StartCountdown(detonationDelay);
     }
 
     private void SpawnC4Visual()
@@ -72,17 +78,15 @@ public class GateController : MonoBehaviour, IInteractable
         yield return new WaitForSeconds(detonationDelay);
 
         IsDestroyed = true;
+        BombTimerUI.Instance?.Hide();
         OnGateDestroyed?.Invoke();
         Debug.Log("C4 exploded — Gate destroyed!");
 
+        AudioManager.Instance?.PlaySFX(explosionClip);
+
         if (ScreenFlash.Instance != null)
         {
-            Debug.Log("ScreenFlash triggered!");
             ScreenFlash.Instance.Flash(flashColor, flashFadeDuration);
-        }
-        else
-        {
-            Debug.LogWarning("ScreenFlash.Instance is NULL!");
         }
 
         if (c4VisualInstance != null) Destroy(c4VisualInstance);

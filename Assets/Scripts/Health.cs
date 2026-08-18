@@ -9,7 +9,7 @@ public class Health : MonoBehaviour, IDamageable
 
     public event Action OnDamaged;
     public event Action OnDeath;
-
+    public event Action OnHealed;
     private bool isDead;
 
     private void Awake()
@@ -40,7 +40,6 @@ public class Health : MonoBehaviour, IDamageable
 
     private void Die()
     {
-        Debug.Log($"{gameObject.name} died!");
         isDead = true;
         OnDeath?.Invoke();
 
@@ -53,6 +52,8 @@ public class Health : MonoBehaviour, IDamageable
     {
         if (isDead) return;
         CurrentHealth = Mathf.Min(CurrentHealth + amount, maxHealth);
+
+        OnHealed?.Invoke();
     }
 
 }

@@ -36,6 +36,9 @@ public class PlayerMining : MonoBehaviour
     public float attackRange = 1.2f;
     [Range(0f, 180f)] public float attackAngle = 60f;
 
+    [Header("Audio")]
+    public AudioClip swingClip;
+
     [Header("Equip")]
     public bool isEquipped = false;
 
@@ -146,6 +149,7 @@ public class PlayerMining : MonoBehaviour
     {
         isMining = false;
         mineTimer = 0f;
+        MiningProgressBarUI.Instance?.Hide();
     }
 
     private void Update()
@@ -175,6 +179,7 @@ public class PlayerMining : MonoBehaviour
         }
 
         mineTimer += Time.deltaTime;
+        MiningProgressBarUI.Instance?.UpdateProgress(mineTimer, mineInterval);
         if (mineTimer >= mineInterval)
         {
             mineTimer = 0f;
@@ -248,12 +253,13 @@ public class PlayerMining : MonoBehaviour
             CancelMining();
         }
 
-        Debug.Log(isEquipped ? "Pickaxe equipped" : "Pickaxe unequipped");
     }
 
     public void PerformSwingHit()
     {
         if (!isEquipped) return;
+
+        AudioManager.Instance?.PlaySFX(swingClip);
 
         Vector2 mouseWorldPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         Vector2 aimDirection = (mouseWorldPos - (Vector2)transform.position).normalized;
@@ -268,9 +274,10 @@ public class PlayerMining : MonoBehaviour
             Vector2 toTarget = ((Vector2)hit.transform.position - (Vector2)transform.position).normalized;
             float angle = Vector2.Angle(aimDirection, toTarget);
 
-            if (angle > attackAngle) continue; // di luar cone, skip
+            if (angle > attackAngle) continue;
 
             var damageable = hit.GetComponent<IDamageable>();
+
             if (damageable != null)
             {
                 damageable.Damage(swingDamage);
@@ -318,4 +325,3 @@ public class PlayerMining : MonoBehaviour
         }
     }
 }
-

@@ -12,10 +12,16 @@ public class EnemyAI : MonoBehaviour
     public float attackInterval = 1.5f;
     public float engageBuffer = 0.2f;
 
+    [Header("Audio")]
+    public AudioClip attackClip;
+
     [Header("Targeting")]
     public string[] priorityTags = { "Defense", "Cart" };
     public float playerAggroRange = 3f;
     public float retargetInterval = 1f;
+
+    [Header("Animation")]
+    public Animator animator;
 
     private Transform currentTarget;
     private Collider2D selfCollider;
@@ -28,10 +34,13 @@ public class EnemyAI : MonoBehaviour
     private float retargetTimer;
     private bool isEngaged;
 
+
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         selfCollider = GetComponent<Collider2D>();
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -66,6 +75,7 @@ public class EnemyAI : MonoBehaviour
         else
         {
             rb.linearVelocity = Vector2.zero;
+            UpdateAnimator(Vector2.zero, isMoving: false);
             TryAttack();
         }
     }
@@ -93,6 +103,19 @@ public class EnemyAI : MonoBehaviour
         return currentTarget.position;
     }
 
+    private void UpdateAnimator(Vector2 direction, bool isMoving)
+    {
+        if (animator == null) return;
+
+        animator.SetBool("IsWalking", isMoving);
+
+        if (isMoving)
+        {
+            animator.SetFloat("InputX", direction.x);
+            animator.SetFloat("InputY", direction.y);
+        }
+    }
+
     private void MoveTowardsTarget()
     {
         Vector2 approachPoint = GetApproachPoint();
@@ -117,6 +140,8 @@ public class EnemyAI : MonoBehaviour
 
         Vector2 desiredVelocity = direction * moveSpeed;
         rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, desiredVelocity, 8f * Time.deltaTime);
+
+        UpdateAnimator(direction, isMoving: true);
     }
 
     private void TryAttack()
@@ -127,8 +152,8 @@ public class EnemyAI : MonoBehaviour
 
         if (currentTargetDamageable != null)
         {
-            float dist = GetDistanceToTarget();
-            Debug.Log($"{gameObject.name} attacking {currentTarget.name} at distance {dist:F2}");
+            AudioManager.Instance?.PlaySFX(attackClip);
+            if (animator != null) animator.SetTrigger("Attack");
             currentTargetDamageable.Damage(attackDamage);
         }
     }

@@ -50,7 +50,6 @@ public class WaveSpawner : MonoBehaviour
         bool secondEnemyUnlocked = elapsedTime >= secondEnemyUnlockTime;
         int buffSteps = GetBuffSteps();
 
-        Debug.Log($"Spawning {count} enemies at t={elapsedTime:F0}s, buffSteps={buffSteps}");
 
         for (int i = 0; i < count; i++)
         {

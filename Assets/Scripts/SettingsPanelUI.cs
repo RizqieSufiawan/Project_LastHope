@@ -9,7 +9,7 @@ public class SettingsPanelUI : MonoBehaviour
 
     private void OnEnable()
     {
-        float savedVolume = PlayerPrefs.GetFloat(VolumePrefKey, 1f);
+        float savedVolume = PlayerPrefs.GetFloat(VolumePrefKey, 0.5f);
         AudioListener.volume = savedVolume;
 
         if (volumeSlider != null)

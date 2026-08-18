@@ -12,6 +12,12 @@ public class PlayerMovement : MonoBehaviour
     private float facingX = 1f;
     public float FacingX => facingX;
 
+    [Header("Audio")]
+    public AudioSource footstepSource;
+    public AudioClip footstepClip;
+    public float footstepInterval = 0.35f;
+    private float footstepTimer;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -33,6 +39,29 @@ public class PlayerMovement : MonoBehaviour
 
             if (moveInput.x != 0f)
                 facingX = Mathf.Sign(moveInput.x);
+
+            HandleFootsteps();
+        }
+        else
+        {
+            footstepTimer = 0f;
+            if (footstepSource != null && footstepSource.isPlaying)
+            {
+                footstepSource.Stop();
+            }
+        }
+    }
+
+    private void HandleFootsteps()
+    {
+        footstepTimer -= Time.deltaTime;
+        if (footstepTimer <= 0f)
+        {
+            if (footstepSource != null && footstepClip != null)
+            {
+                footstepSource.PlayOneShot(footstepClip);
+            }
+            footstepTimer = footstepInterval;
         }
     }
 
@@ -40,4 +69,4 @@ public class PlayerMovement : MonoBehaviour
     {
         moveInput = context.ReadValue<Vector2>();
     }
-}
+}   

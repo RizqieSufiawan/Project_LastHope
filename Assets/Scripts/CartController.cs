@@ -22,7 +22,6 @@ public class CartController : MonoBehaviour
 
     private void HandleCartDestroyed()
     {
-        Debug.Log("Cart destroyed — level failed!");
 
         if (FailMenuUI.Instance != null)
         {

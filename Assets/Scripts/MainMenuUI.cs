@@ -11,10 +11,15 @@ public class MainMenuUI : MonoBehaviour
     [Tooltip("Exact scene name (as in Build Settings) for the first playable level.")]
     public string firstLevelSceneName = "SampleScene";
 
+    [Header("Audio")]
+    public AudioClip menuMusic;
+
     private void Awake()
     {
         if (mainPanel != null) mainPanel.SetActive(true);
         if (settingsPanel != null) settingsPanel.SetActive(false);
+
+        AudioManager.Instance?.PlayMusic(menuMusic);
     }
 
     public void OnClickPlay()

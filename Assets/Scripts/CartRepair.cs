@@ -38,7 +38,6 @@ public class CartRepair : MonoBehaviour, IInteractable
         ResourceManager.Instance.Spend("Copper", copperToSpend);
         health.Heal(healAmount);
 
-        Debug.Log($"Repaired Cart by {healAmount} HP, spent {copperToSpend} Copper. Cart HP: {health.CurrentHealth}/{health.maxHealth}");
     }
 
     public string GetPrompt()

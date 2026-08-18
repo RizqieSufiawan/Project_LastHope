@@ -9,7 +9,7 @@ public class PlayerInventory : MonoBehaviour
 
     public int turretCount = 0;
 
-    public int grenadeCount = 0; // no cap — same pattern as Turret
+    public int grenadeCount = 0;
 
     public List<string> acquisitionOrder = new List<string>();
 
@@ -27,7 +27,6 @@ public class PlayerInventory : MonoBehaviour
         if (!acquisitionOrder.Contains("C4"))
         {
             acquisitionOrder.Add("C4");
-            Debug.Log("C4 added to acquisitionOrder. Current list: " + string.Join(", ", acquisitionOrder));
         }
 
         c4Count = Mathf.Min(c4Count + amount, maxC4);
@@ -53,7 +52,6 @@ public class PlayerInventory : MonoBehaviour
         if (!acquisitionOrder.Contains("Turret"))
         {
             acquisitionOrder.Add("Turret");
-            Debug.Log("Turret added to acquisitionOrder. Current list: " + string.Join(", ", acquisitionOrder));
         }
 
         turretCount += amount;
@@ -71,7 +69,7 @@ public class PlayerInventory : MonoBehaviour
 
     public bool CanCraftGrenade()
     {
-        return true; // resource cost is the only real limiter, same as Turret
+        return true;
     }
 
     public bool AddGrenade(int amount)
@@ -79,7 +77,6 @@ public class PlayerInventory : MonoBehaviour
         if (!acquisitionOrder.Contains("Grenade"))
         {
             acquisitionOrder.Add("Grenade");
-            Debug.Log("Grenade added to acquisitionOrder. Current list: " + string.Join(", ", acquisitionOrder));
         }
 
         grenadeCount += amount;

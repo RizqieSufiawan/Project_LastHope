@@ -3,9 +3,7 @@ using UnityEngine;
 public class GrenadeController : MonoBehaviour
 {
     [Header("Throw")]
-    [Tooltip("How long the grenade takes to travel from the player to the target.")]
     public float flightTime = 0.35f;
-    [Tooltip("Simple visual arc/hop height while flying. Set to 0 for a flat straight-line throw.")]
     public float arcHeight = 0.3f;
 
     [Header("Fuse")]
@@ -19,6 +17,9 @@ public class GrenadeController : MonoBehaviour
     [Header("Visual (optional)")]
     public GameObject explosionVfxPrefab;
 
+    [Header("Audio")]
+    public AudioClip explodeClip;
+
     private Vector3 startPos;
     private Vector3 targetPos;
     private float flightTimer;
@@ -26,7 +27,6 @@ public class GrenadeController : MonoBehaviour
     private float fuseTimer;
     private bool hasExploded;
 
-    // Called right after Instantiate (by GrenadeThrower) to kick off the throw.
     public void Launch(Vector3 from, Vector3 to)
     {
         startPos = from;
@@ -46,7 +46,7 @@ public class GrenadeController : MonoBehaviour
             float t = flightTime > 0f ? Mathf.Clamp01(flightTimer / flightTime) : 1f;
 
             Vector3 pos = Vector3.Lerp(startPos, targetPos, t);
-            pos.y += Mathf.Sin(t * Mathf.PI) * arcHeight; // little hop, purely visual
+            pos.y += Mathf.Sin(t * Mathf.PI) * arcHeight;
             transform.position = pos;
 
             if (t >= 1f)
@@ -81,6 +81,8 @@ public class GrenadeController : MonoBehaviour
                 damageable.Damage(explosionDamage);
             }
         }
+
+        AudioManager.Instance?.PlaySFX(explodeClip);
 
         if (explosionVfxPrefab != null)
         {

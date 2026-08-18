@@ -19,7 +19,6 @@ public class ConfirmationDialogUI : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("ConfirmationDialogUI.Awake() RUNNING on " + gameObject.name);
         Instance = this;
         panel.SetActive(false);
     }
@@ -44,14 +43,17 @@ public class ConfirmationDialogUI : MonoBehaviour
 
     public void OnClickYes()
     {
-        onConfirm?.Invoke(); Debug.Log("OnClickYes() CALLED");
         Close();
+        if (LevelCompleteUI.Instance != null)
+        {
+            LevelCompleteUI.Instance.Show();
+        }
     }
 
     public void OnClickNo()
     {
-        onCancel?.Invoke();
         Close();
+        onCancel?.Invoke();
     }
 
     private void Close()

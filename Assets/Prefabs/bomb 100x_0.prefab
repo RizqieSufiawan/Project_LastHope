@@ -109,3 +109,4 @@ MonoBehaviour:
   explosionRadius: 2
   explosionDamage: 20
   explosionVfxPrefab: {fileID: 5965040113583171423, guid: 50383639160c4c547afb35603509d619, type: 3}
+  explodeClip: {fileID: 8300000, guid: 958279b0750844242895e6c88883ac43, type: 3}

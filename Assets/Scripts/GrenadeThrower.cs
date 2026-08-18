@@ -8,6 +8,9 @@ public class GrenadeThrower : MonoBehaviour
     [Tooltip("Minimum time between throws, prevents spamming clicks.")]
     public float throwCooldown = 0.3f;
 
+    [Header("Audio")]
+    public AudioClip throwClip;
+
     private PlayerInventory inventory;
     private float cooldownTimer;
 
@@ -45,7 +48,6 @@ public class GrenadeThrower : MonoBehaviour
     {
         if (grenadePrefab == null)
         {
-            Debug.LogWarning("GrenadeThrower: grenadePrefab not assigned in Inspector");
             return;
         }
 
@@ -55,6 +57,8 @@ public class GrenadeThrower : MonoBehaviour
         Vector3 targetPos = GetMouseWorldPosition();
         Vector3 startPos = transform.position;
 
+        AudioManager.Instance?.PlaySFX(throwClip);
+
         GameObject grenadeObj = Instantiate(grenadePrefab, startPos, Quaternion.identity);
         var controller = grenadeObj.GetComponent<GrenadeController>();
         if (controller != null)
@@ -62,6 +66,5 @@ public class GrenadeThrower : MonoBehaviour
             controller.Launch(startPos, targetPos);
         }
 
-        Debug.Log($"Grenade thrown from {startPos} to {targetPos}. Remaining: {inventory.grenadeCount}");
     }
 }
